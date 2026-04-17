@@ -1,0 +1,28 @@
+defaults: &defaults
+  adapter: postgresql
+  encoding: unicode
+  min_messages: warning
+  host: localhost
+  username: <%= ENV['local_username_db'] %>
+  password: <%= ENV['local_password_db'] %>
+  timeout: 5000
+  pool: <%= [ENV.fetch("MAX_THREADS", 5).to_i, ENV.fetch("DB_POOL", 5).to_i].max %>
+  port: 5432
+
+development:
+  database: <%= "documind" %>_dev
+  <<: *defaults
+
+test:
+  database: <%= "documind" %>_test
+  <<: *defaults
+
+production: &deploy
+  <<: *defaults
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  database: <%= ENV['RDS_DB_NAME'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  port: <%= ENV['RDS_PORT'] %>
+
+staging: *deploy
