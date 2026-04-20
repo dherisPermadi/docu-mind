@@ -1,0 +1,55 @@
+.flex.h-screen.bg-gray-900.text-gray-100.font-sans.overflow-hidden
+  aside.w-80.border-r.border-gray-800.flex.flex-col.bg-gray-900.z-10
+    .p-6.border-b.border-gray-800
+      h2.text-xl.font-bold.text-blue-400.flex.items-center
+        span.mr-2 🧠
+        | Docu-Mind
+    
+    .flex-1.overflow-y-auto.p-4.space-y-6
+      section
+        h3.text-xs.font-semibold.uppercase.tracking-widest.text-gray-500.mb-4 Add New Content
+        = form_with scope: :document, url: upload_document_path, local: true, class: "space-y-4" do |f|
+          div
+            = f.label :name, "Document Title", class: "text-xs text-gray-500 uppercase"
+            = f.text_field :name, class: "w-full bg-gray-800 border-gray-700 rounded-lg text-white"
+          
+          div
+            = f.label :file, "Document File (PDF, Word, or TXT)", class: "text-xs text-gray-500 uppercase"
+            .border-2.border-dashed.border-gray-700.rounded-xl.p-6.text-center.hover:border-blue-500
+              = f.file_field :file, 
+                accept: ".txt, .pdf, .docx, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document", 
+                class: "cursor-pointer"
+          
+          = f.submit "Upload Content", class: "w-full bg-blue-600 py-2 rounded-lg font-bold"
+      section
+        h3.text-xs.font-semibold.uppercase.tracking-widest.text-gray-500.mb-4 Indexed Files
+        .space-y-2#document-list
+          - if @documents.any?
+            - @documents.each do |doc|
+              .p-3.bg-gray-800.rounded-lg.border.border-gray-700.group
+                .flex.justify-between.items-center
+                  span.text-sm.truncate = doc.name
+                  span.text-xs.text-gray-500 = pluralize(doc.chunks.count, 'chunk')
+          - else
+            p.text-xs.text-gray-600.italic No documents uploaded yet.
+
+  main.flex-1.flex.flex-col.bg-gray-950 data-controller="assistant"
+    header.h-16.border-b.border-gray-800.flex.items-center.justify-between.px-8
+      .flex.items-center.space-x-2
+        .h-3.w-3.bg-green-500.rounded-full.animate-pulse
+        span.text-sm.font-medium.text-gray-400 Logic Engine Online
+      span.text-xs.text-gray-600 Document Reader v1.0
+
+    #chat-results.flex-1.overflow-y-auto.p-8.space-y-6.flex.flex-col-reverse
+      - @previous_questions.each do |q|
+        = render "question_result", question: q
+
+    .p-6.bg-gradient-to-t.from-gray-950.to-transparent
+      .max-w-3xl.mx-auto
+        #error-message.hidden.mb-2.p-2.bg-red-900.bg-opacity-20.border.border-red-900.text-red-400.text-xs.rounded-lg
+        #question_form
+          = render "form", question: @question
+
+    #loading-spinner.hidden.flex.flex-col.items-center.justify-center.py-10
+      .animate-spin.rounded-full.h-10.w-10.border-b-2.border-blue-500
+      p.text-gray-400.mt-2 Analyzing documents...

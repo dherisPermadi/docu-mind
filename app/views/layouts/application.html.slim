@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title DocuMind AI
+    meta name="viewport" content="width=device-width,initial-scale=1"
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    script src="https://cdn.tailwindcss.com?plugins=forms,typography"
+    
+    = javascript_importmap_tags
+  body.bg-gray-900.text-gray-100
+    = yield

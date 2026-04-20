@@ -1,0 +1,16 @@
+= form_with model: question, url: ask_path, data: { controller: "chat", action: "turbo:submit-start->chat#showLoading turbo:submit-end->chat#hideLoading" } do |f|
+  .relative.group
+    .absolute.-inset-0.5.bg-gradient-to-r.from-blue-600.to-purple-600.rounded-2xl.blur.opacity-25.group-hover:opacity-50.transition.duration-1000
+    .relative.flex.items-center.bg-gray-900.rounded-xl.border.border-gray-800
+      = f.text_field :user_query, 
+        placeholder: "Search for the content...", 
+        autocomplete: "off",
+        class: "w-full bg-transparent border-none py-5 pl-6 pr-20 text-gray-100 focus:ring-0 outline-none"
+      
+      .absolute.right-3.flex.items-center.space-x-2
+        button#submit-btn.bg-blue-600.p-2.5.rounded-lg.hover:bg-blue-500.transition-colors type="submit"
+          svg.w-5.h-5.text-white fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        
+        #loading-spinner.hidden
+          .w-6.h-6.border-3.border-blue-400.border-t-transparent.rounded-full.animate-spin
