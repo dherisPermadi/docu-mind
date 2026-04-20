@@ -3,8 +3,8 @@ defaults: &defaults
   encoding: unicode
   min_messages: warning
   host: localhost
-  username: <%= ENV['local_username_db'] %>
-  password: <%= ENV['local_password_db'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
   timeout: 5000
   pool: <%= [ENV.fetch("MAX_THREADS", 5).to_i, ENV.fetch("DB_POOL", 5).to_i].max %>
   port: 5432

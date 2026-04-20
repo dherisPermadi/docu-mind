@@ -1,0 +1,11 @@
+- if @question&.persisted?
+  = turbo_stream.prepend "chat-results" do
+    = render "question_result", question: @question
+
+- if @error
+  = turbo_stream.update "error-message" do
+    span.text-red-500 = @error
+  = turbo_stream.remove_class "error-message", "hidden"
+
+= turbo_stream.replace "question_form" do
+  = render "form", question: Question.new
